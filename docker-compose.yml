@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik:2.9
+    command: 
+        - --providers.docker=true
+        - --log.level=INFO
+        - --entryPoints.web.address=:8000
+
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+        - "8000:8000"
+
+  web:
+    build: .
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: project_planning_tool
+    volumes:
+      - .:/workspace
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.frontapp.service=front"
+        - "traefik.http.routers.frontapp.rule=Host(`localhost`)"
+        - "traefik.http.services.front.loadbalancer.server.port=5000"
+    networks:
+      - project-planning-tool-network
+
+  db:
+    image: postgres:14.5
+    container_name: project_planning_tool_db
+    environment:
+      POSTGRES_USER: project_planning_tool
+      POSTGRES_PASSWORD: project_planning_tool
+      POSTGRES_DB: project_planning_tool
+    volumes:
+      - project_planning_tool_web_app_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - project-planning-tool-network
+
+networks:
+  project-planning-tool-network:
+    driver: bridge
+
+volumes:
+  project_planning_tool_web_app_data:

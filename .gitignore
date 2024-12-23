@@ -1,0 +1,60 @@
+# Python bytecode and cache
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+
+# Django migrations
+migrations/
+
+# Media uploads (exclude if you want to version control some specific media files)
+media/
+!media/.gitkeep
+
+# Static files (generated files from collectstatic)
+static/
+!static/react/index.html  # Include index.html in static if needed
+
+# Environment variables and secrets
+.env
+*.env
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Logs
+*.log
+
+# Node.js dependencies (for React)
+node_modules/
+
+# Build artifacts
+build/
+dist/
+
+# Docker artifacts
+docker-compose.override.yml
+*.pid
+*.tar
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Dependency directories and files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Traefik and other Docker config/cache files
+/acme.json
+
+# Ignore Nginx or other server cache
+nginx-cache/
